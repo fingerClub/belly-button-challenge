@@ -7,3 +7,4 @@ otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse(),
 
 format for bubble chart found on chatgpt
 
+You can find the deployment aT https://fingerclub.github.io/belly-button-challenge/
