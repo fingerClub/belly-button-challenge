@@ -9,8 +9,6 @@ function buildMetadata(sample) {
     // SOLVERD CODE to interperet mesaning of each cod
     let resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
     let result = resultArray[0];
-    console.log(resultArray);
-    console.log(result);
     //console.log(json.stringify(resultArray));
     // Use d3 to select the panel with id of `#sample-metadata`
     let sampleHTML = d3.select("#sample-metadata");
@@ -37,26 +35,57 @@ function buildCharts(sample) {
     // Filter the samples for the object with the desired sample number
     let sampleNum = samples.filter(sampleObj => sampleObj.id == sample);
     let result = sampleNum[0];
+    console.log(result)
     // Get the otu_ids, otu_labels, and sample_values
     let otu_ids = result.otu_ids
     let otu_labels = result.otu_labels
     let sample_values = result.sample_values
 
     // Build a Bubble Chart
-
-
+    let traceBubble = {
+      x: otu_ids,
+      y: sample_values,
+      text: otu_labels,
+      mode: 'markers',
+      marker: {
+        size: sample_values,
+        color: otu_ids,
+        colorscale: 'Earth',
+        showscale: true
+      }
+    };
+    let bubs = [traceBubble];
+    let bubbleLayout = {
+      title: "bacteria Cultures Per Sample",
+      showlegend: false,
+      xaxis: { title: 'OTU ID'},
+      yaxis: { title: 'Number of Bacteria'},
+      hovermode: 'closest',
+      width: 1100,
+      height: 550
+    }
     // Render the Bubble Chart
-
+    Plotly.newPlot("bubble", bubs, bubbleLayout);
 
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
 
 
     // Build a Bar Chart
     // Don't forget to slice and reverse the input data appropriately
-
-
+    let traceBar = {
+      x: sample_values.slice(0, 10).reverse(),
+      y: otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse(),
+      type: "bar",
+      orientation: 'h',
+      text: otu_labels.slice(0,10).reverse()
+    };
+    let stuff = [traceBar];
+    let layout = {
+      title: "top 10 Bacteria Cultures Found",
+      xaxis: {title: 'Number of Bacteria'}
+    };
     // Render the Bar Chart
-
+    Plotly.newPlot("bar", stuff, layout);
   });
 }
 
